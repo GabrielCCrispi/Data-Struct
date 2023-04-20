@@ -35,8 +35,16 @@ class Lista:
             self.head = novoNoh
             self.tail = novoNoh
         else:
+            novoNoh.prev = self.tail
+            self.tail.next = novoNoh
+            self.tail = novoNoh
+        self.size += 1
     
-    
+    def insert(self, valor, pos):
+        
+        
+        
+        
     def __str__(self):
         
         strLista = "["
