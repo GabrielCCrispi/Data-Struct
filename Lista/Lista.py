@@ -58,6 +58,15 @@ class Lista:
                 i += 1
                         
             novoNoh.next = nohAux
+            novoNoh.prev = nohAux.prev
+            novoNoh.prev.next = novoNoh
+            #nohAux.prev.next = novoNoh
+            nohAux.prev = novoNoh
+            #novoNoh.next.prev = novoNoh
+            
+            
+            
+            
     def __str__(self):
         
         strLista = "["
@@ -75,7 +84,13 @@ class Lista:
         
 #criar uma lista
 lista1= Lista()
+lista1.insert(8, 0)
+lista1.insert(15, 1)
+lista1.insert(7, 1)
+lista1.insert(9, 2)
+lista1.insert(11, 2)
 print(lista1)
+
 
 noh1 = Node(10)
 noh2 = Node(15)
