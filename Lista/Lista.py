@@ -89,7 +89,6 @@ lista1.insert(9, 2)
 lista1.insert(11, 2)
 print(lista1)
 
-
 noh1 = Node(10)
 noh2 = Node(15)
 noh3 = Node(20)
