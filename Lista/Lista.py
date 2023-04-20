@@ -41,10 +41,23 @@ class Lista:
         self.size += 1
     
     def insert(self, valor, pos):
-        
-        
-        
-        
+        if pos == 0:
+            self.insertHead(valor)
+        elif pos == self.size:
+            self.insertTail(valor)
+        elif pos > self.size:
+            print("Posição invalida")
+            return        
+        else:
+            novoNoh = Node(valor)
+            
+            nohAux = self.head
+            i = 0
+            while i < pos:
+                nohAux = nohAux.next
+                i += 1
+                        
+            novoNoh.next = nohAux
     def __str__(self):
         
         strLista = "["
@@ -69,14 +82,12 @@ noh2 = Node(15)
 noh3 = Node(20)
 noh4 = Node(25)
 
-
 noh1.next = noh2
 noh2.prev = noh1
 noh2.next = noh3
 noh3.prev = noh2
 noh3.next = noh4
 noh4.prev = noh3
-
 
 #print( noh4.prev.prev.prev.data )
 #print( noh1.next.next.next.data )
