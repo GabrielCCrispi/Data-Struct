@@ -65,8 +65,6 @@ class Lista:
             #novoNoh.next.prev = novoNoh
             
             
-            
-            
     def __str__(self):
         
         strLista = "["
