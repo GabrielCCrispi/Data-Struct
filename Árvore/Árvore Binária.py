@@ -7,7 +7,28 @@ class Node:
         self.data = data
         self.left = left
         self.right = right
+    
+class Tree:
+    
+    def __init__(self):
+        
+        self.root = None
+    
+    def insert(self,valor, nohAtual = None):
+        
+        if self.root is None:
+            self.root = Node(valor)
+        
+        else:
+            
+            if nohAtual is not None:
+                nohAtual = Node(valor)
+            
+            if valor < nohAtual.data:
+                self.insert( nohAtual.left)
 
+            else: 
+                self.insert( valor, nohAtual.right )
 
 def preOrdem(raiz, strArvore = ""):
     
@@ -15,13 +36,17 @@ def preOrdem(raiz, strArvore = ""):
         return strArvore
     
     else:
-        strArvore += " " + raiz.data
+        strArvore += " " + str(raiz.data)
+        
+        strArvore += "("
     
         if raiz.left is not None:
             strArvore +=  preOrdem( raiz.left )
         
         if raiz.right is not None:
             strArvore += preOrdem( raiz.right )
+        
+        strArvore += ")"
         
         return strArvore
     
@@ -42,4 +67,4 @@ noh6.right = noh14
 noh35.left =noh23
 noh35.right = noh48
 
-print( noh17.left.right.data )
+print( preOrdem(noh17) )
