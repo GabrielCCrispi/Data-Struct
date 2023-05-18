@@ -60,7 +60,49 @@ class Graph:
         # se o grafo nao e orientado, adiciona o vertice de origem como adjacente ao vertice de destino
         if self.directed==False: 
             self.adjList[idxDest].append( idxOrig )
+            
+    def exploreVertex(self, firstVertex = 0, cor = None):
 
+        strBFS = ''
+
+        branco = 0
+        cinza = 1
+        preto = 2
+
+        if cor is None:
+            cor = [branco] * len(self.verticesList)
+
+        cor[firstVertex] = cinza
+
+        strBFS += str(self.verticesList[firstVertex].data)
+
+        # inicia a fila vazia
+        fila = []     
+
+        # adiciona o vertice
+        fila.append(firstVertex)
+        
+        
+        while len(fila) > 0:
+            
+            idxVertex = fila[0]
+
+            for idxAdj in self.adjList[idxVertex]:
+                
+                if cor[idxAdj] == branco:
+                
+                 cor[idxAdj] = cinza
+
+                fila.append(idxAdj)
+                
+                #imprime o vertice visitado
+                strBFS += ' ' + str(self.verticesList[idxAdj].data)
+                
+            cor[idxVertex] = preto
+            
+            #elimina o vertice visitado
+            fila.pop(0)
+        return strBFS, cor
                         
     def __str__(self):
         
@@ -79,8 +121,6 @@ class Graph:
         
         return info
             
-        
-        
 
 if __name__ == "__main__":
 
@@ -106,8 +146,8 @@ if __name__ == "__main__":
     grafo.addEdge('h','G')
     
     print(grafo)
-    print( 'BFS (largura): ',grafo.breadthFirstSearch(firstVertex = 1) )
-    print( 'DFS (profundidade): ',grafo.depthFirstSearch(firstVertex = 1) )
+    strBFS += str(self.verticesList[firstVertex].data)
+    print(strBFS)
      
     # cria o segundo grafo
     grafo = Graph(directed=True)
