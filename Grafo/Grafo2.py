@@ -1,3 +1,8 @@
+"""
+Nesta implementacao, existe o risco de alguem adicionar arestas repetidas. 
+Esse problema nao foi corrigido para o codigo ficar mais simples de entender.
+"""
+
 class Vertex:
     """
     Noh para uma arvore AVL
@@ -60,50 +65,90 @@ class Graph:
         # se o grafo nao e orientado, adiciona o vertice de origem como adjacente ao vertice de destino
         if self.directed==False: 
             self.adjList[idxDest].append( idxOrig )
-            
-    def exploreVertex(self, firstVertex = 0, cor = None):
+                
+    def breadthFirstSearch(self, firstVertex=0):
+        """
+        Faz a busca em largura para todos os vertices, evitando
+        que a busca deixa algum grafo sem visitar em caso do grafo ser desconexo 
+        """ 
 
+        # cria a variavel branco que indica que um vertice nao foi visitado
+        branco = 0
+    
+        # visita o primeiro no desejado pelo usuario
+        strBFS, cor = self.exploreVertexBFS(firstVertex)
+        
+        # usa parenteses para mostrar todas as visitas comecando pelo vertice atual
+        strBFS = '('+ strBFS + ')'
+        
+        # verifica se existem nos sem visitar
+        for idxVertex in range(len(self.verticesList)):
+            if cor[idxVertex] == branco:
+                auxStrBFS, cor = self.exploreVertexBFS(idxVertex, cor)
+                
+                # usa as parenteses para separar as arvores geradas pela busca
+                strBFS += '(' + auxStrBFS + ')'
+                
+        return strBFS
+        
+    def exploreVertexBFS(self, firstVertex=0, cor=None):
+        """
+        Faz a busca em largura a partir de um
+        determinado vertice indicado na entrada
+        """
+
+        # inicializa uma string que ira guardar a ordem dos nos visitados
         strBFS = ''
-
+        
+        # cria variaveis branco, cinza e preto
         branco = 0
         cinza = 1
         preto = 2
 
+        # caso nenhuma lista de cores seja informado como entrada
+        # inicia todos os vertices com a cor branca
         if cor is None:
-            cor = [branco] * len(self.verticesList)
-
-        cor[firstVertex] = cinza
-
-        strBFS += str(self.verticesList[firstVertex].data)
-
-        # inicia a fila vazia
-        fila = []     
-
-        # adiciona o vertice
-        fila.append(firstVertex)
-        
-        
-        while len(fila) > 0:
             
+            # pinta todos de branco
+            cor = [branco]*len( self.verticesList )
+
+        # marca o vertice atual de cinza
+        cor[firstVertex] = cinza
+        
+        # como o vertice foi pintado de cinza, significando que ele
+        # foi visitado, adiciona ele na string que mostra o percurso da busca
+        strBFS += str(self.verticesList[firstVertex].data) + ' '
+        
+        # cria uma fila para guardar os vertices que ainda não foram visitados por completo
+        fila = []
+        
+        # adiciona o primeiro vertice na fila
+        fila.append( firstVertex )
+        while len(fila)>0:
+            
+            # retorna o primeiro indice da fila
             idxVertex = fila[0]
 
+            # percorre todos os vertices adjacentes
             for idxAdj in self.adjList[idxVertex]:
-                
-                if cor[idxAdj] == branco:
-                
-                 cor[idxAdj] = cinza
+                if cor[idxAdj]==branco:
 
-                fila.append(idxAdj)
-                
-                #imprime o vertice visitado
-                strBFS += ' ' + str(self.verticesList[idxAdj].data)
-                
-            cor[idxVertex] = preto
-            
-            #elimina o vertice visitado
+                    # marca o vertice como visitado
+                    cor[idxAdj] = cinza
+                    fila.append(idxAdj)
+                    
+                    # como o vertice foi pintado de cinza, significando que ele
+                    # foi visitado, adiciona ele na string que mostra o percurso da busca
+                    strBFS += str(self.verticesList[idxAdj].data) + ' '
+                    
+            # remove o vertice da fila ja que todos os seus 
+            # adjacentes foram analizados
             fila.pop(0)
+            
         return strBFS, cor
-                        
+        
+        
+            
     def __str__(self):
         
         info = '\nLista de adjacencia:\n'+20*'='+'\n'
@@ -121,6 +166,13 @@ class Graph:
         
         return info
             
+        
+        
+                
+        
+
+        
+
 
 if __name__ == "__main__":
 
@@ -146,8 +198,7 @@ if __name__ == "__main__":
     grafo.addEdge('h','G')
     
     print(grafo)
-    strBFS += str(self.verticesList[firstVertex].data)
-    print(strBFS)
+    print( 'BFS (largura): ',grafo.breadthFirstSearch(firstVertex = 1) )
      
     # cria o segundo grafo
     grafo = Graph(directed=True)
@@ -168,54 +219,13 @@ if __name__ == "__main__":
     print()
     print(grafo)
     print( 'BFS (largura): ',grafo.breadthFirstSearch() )
-    print( 'DFS (profundidade): ',grafo.depthFirstSearch() )
     
     
     
-class GraphMatrix:
     
-    def __init__(self, directed = False):
-        
-        self.directed = directed
-        self.verticesList = []
-        self.adjMat = []
-        
-    def addVertex(self, valor):
-        
-        vertNovo = Vertex(valor)
-        
-        for i, vert in enumerate(self.verticesList):
-            self.adjMat[i].append(0)
-            
-        self.verticesList.append(vertNovo)
-        
-        listaZeros = [0] * len(self.verticesList)
-        self.adjMat.append( listaZeros )
-        
-    def __str__(self):
-        
-        strGrafo = '  '
-        for i, vert in enumerate(self.verticesList):
-            strGrafo += "  " + str(vert.data)
-            
-        for lin, vert in enumerate( self.verticesList ):
-            
-            strGrafo += '\n' + str(vert.data) + ': '
-            
-            for col, vertCol in enumerate( self.verticesList ):
-                strGrafo += ' ' + str(self.adjMat[lin][col] ) + " "
-            
-            
-        return strGrafo
-        
-    
-grafo1 = GraphMatrix(directed=False)
-grafo1.addVertex(1)
-grafo1.addVertex(2)
-grafo1.addVertex(3)
-grafo1.addVertex(4)
-grafo1.addVertex(5)
-grafo1.addVertex(6)
 
-print(grafo1)
-        
+    
+
+    
+    
+    
