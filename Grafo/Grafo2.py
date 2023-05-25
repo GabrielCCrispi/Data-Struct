@@ -146,7 +146,34 @@ class Graph:
             fila.pop(0)
             
         return strBFS, cor
+    
+    def exploreVertexDFS(self, idxVertex,
+                                cor = None):
+        strDFS = ''
         
+        branco = 0
+        cinza = 1
+        preto = 2
+        
+        if cor is None:
+            cor = [branco] * len( self.verticesList)
+            cor [ idxVertex ] = cinza
+            
+            pilha = []
+            pilha.append( idxVertex )
+            
+            vertAtual = self.verticesList[idxVertex]
+            strDFS += ' ' + str(vertAtual)
+            
+            for idxAdj in self.adjList[idxVertex]:
+                
+                if cor[idxAdj] == branco:
+                    auxStrDFS, cor = self.exploreVertex(idxAdj, cor)
+                    
+                    strDFS += ' ' + auxStrDFS
+            
+            cor[ idxVertex ], cor
+            
         
             
     def __str__(self):
@@ -219,6 +246,8 @@ if __name__ == "__main__":
     print()
     print(grafo)
     print( 'BFS (largura): ',grafo.breadthFirstSearch() )
+    
+    
     
     
     
