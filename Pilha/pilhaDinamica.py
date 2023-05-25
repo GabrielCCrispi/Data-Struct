@@ -128,9 +128,6 @@ class Pilha:
         return strPilha    
         
 
-
-
-
 # testando a pilha
 pilha = Pilha()
 
